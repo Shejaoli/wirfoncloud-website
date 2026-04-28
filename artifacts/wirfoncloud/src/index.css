@@ -719,7 +719,7 @@ body { padding-top: 92px; }
   height: 46px;
   border-radius: 12px;
   border: 0;
-  background: #f04b27;
+  background: var(--brand);
   color: #fff;
   cursor: pointer;
   display: flex;
@@ -728,7 +728,7 @@ body { padding-top: 92px; }
   font-size: 0.95rem;
   transition: background 0.18s ease, transform 0.18s ease;
 }
-.footer-subscribe-form button:hover { background: #d63d1c; transform: translateY(-50%) scale(1.05); }
+.footer-subscribe-form button:hover { background: var(--brand-dark); transform: translateY(-50%) scale(1.05); }
 .footer-subscribe-form button:disabled { opacity: 0.6; cursor: not-allowed; }
 .footer-subscribe-msg {
   margin-top: 1rem;
@@ -757,7 +757,7 @@ body { padding-top: 92px; }
 .footer-slogan {
   margin: 0;
   font-weight: 600;
-  color: #f04b27;
+  color: var(--brand);
   font-size: 0.95rem;
 }
 .footer-divider {
@@ -784,7 +784,7 @@ body { padding-top: 92px; }
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #f04b27;
+  background: var(--brand);
   color: #fff;
   display: flex;
   align-items: center;
@@ -792,7 +792,7 @@ body { padding-top: 92px; }
   font-size: 0.85rem;
   transition: background 0.18s ease, transform 0.18s ease;
 }
-.footer-socials a:hover { background: #d63d1c; color: #fff; transform: translateY(-2px); }
+.footer-socials a:hover { background: var(--brand-dark); color: #fff; transform: translateY(-2px); }
 
 .footer-col h4 {
   font-size: 1.05rem;
@@ -820,13 +820,13 @@ body { padding-top: 92px; }
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #f04b27;
+  background: var(--brand);
 }
 .footer-col a {
   color: var(--grey-700);
   transition: color 0.15s ease;
 }
-.footer-col a:hover { color: #f04b27; }
+.footer-col a:hover { color: var(--brand); }
 
 .footer-contact-col p { margin: 0 0 0.6rem; font-size: 0.92rem; color: var(--grey-700); }
 .footer-contact-label {
@@ -837,7 +837,7 @@ body { padding-top: 92px; }
   margin-bottom: 0.1rem;
 }
 .footer-contact-col a { color: var(--grey-700); }
-.footer-contact-col a:hover { color: #f04b27; }
+.footer-contact-col a:hover { color: var(--brand); }
 
 .footer-map {
   border-radius: 14px;
@@ -870,7 +870,7 @@ body { padding-top: 92px; }
   background: #0c1424;
   color: rgba(255, 255, 255, 0.78);
   padding: 18px 0;
-  border-top: 4px solid #f04b27;
+  border-top: 4px solid var(--brand);
 }
 .footer-bottom-row {
   display: flex;
