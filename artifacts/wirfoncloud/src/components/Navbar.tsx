@@ -15,6 +15,7 @@ const links: { href: string; label: string; key: string; dropdown?: { href: stri
   },
   { href: "/consultancy", label: "Consultancy", key: "consultancy" },
   { href: "/blog", label: "Blog", key: "blog" },
+  { href: "/gallery", label: "Gallery", key: "gallery" },
   {
     href: "/about",
     label: "About Us",

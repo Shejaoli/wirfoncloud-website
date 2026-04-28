@@ -25,6 +25,7 @@ A third artifact (`artifacts/mockup-sandbox`) is the workspace's design preview 
 - `/academy` — Academy with anchor sections: `#courses`, `#learning-paths`, `#more`
 - `/consultancy` — Consultancy services and testimonials
 - `/blog` — Newsletter signup + LinkedIn banner + latest posts
+- `/gallery` — Photo gallery (Brussels Summit + community events) with click-to-zoom lightbox. Images are imported from `attached_assets/` via the `@assets` Vite alias.
 - `/faq` — FAQ accordion
 - `/admin/login` — Admin sign-in
 - `/admin` — Admin dashboard (auth-protected) for editing all site content
