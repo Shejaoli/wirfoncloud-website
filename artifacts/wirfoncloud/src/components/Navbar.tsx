@@ -18,7 +18,7 @@ const links: { href: string; label: string; key: string; dropdown?: { href: stri
   { href: "/gallery", label: "Gallery", key: "gallery" },
   {
     href: "/about",
-    label: "About Us",
+    label: "About",
     key: "about",
     dropdown: [
       { href: "/about#who-we-are", label: "Who We Are" },
@@ -98,6 +98,10 @@ export default function Navbar() {
             )}
           </ul>
         </nav>
+
+        <Link href="/about#contact" className="nav-cta">
+          Contact us
+        </Link>
       </div>
     </header>
   );
