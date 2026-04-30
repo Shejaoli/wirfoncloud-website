@@ -191,7 +191,7 @@ export const DEFAULT_SITE: SiteContent = {
     twitter: "https://twitter.com/JoinWirfonCloud",
     facebook: "https://www.facebook.com/wirfoncloud",
     youtube: "https://www.youtube.com/@wirfoncloud",
-    whatsapp: "https://wa.me/",
+    whatsapp: "https://wa.me/250791921156",
   },
   contact: { email: "contact@wirfoncloud.com" },
   footer: { copyrightYear: 2026 },

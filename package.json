@@ -1,5 +1,7 @@
 {
-  "name": "workspace",
+  "name": "wirfoncloud-website",
+  "description": "Official website for WirfonCloud - Let's rule the clouds",
+  "author": "YSOTA Ltd",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {

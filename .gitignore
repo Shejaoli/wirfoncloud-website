@@ -44,6 +44,20 @@ Thumbs.db
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
-# Replit
+# Environment
+.env
+.env.local
+.env.*.local
+*.log
+
+# Replit workspace files (kept locally, never committed)
 .cache/
 .local/
+.agents/
+.replit
+.replitignore
+replit.nix
+replit.md
+
+# Uploaded media
+public/images/uploads/
