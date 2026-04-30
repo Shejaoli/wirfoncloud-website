@@ -559,3 +559,13 @@ p { margin: 0 0 1em; color: var(--grey-700); }
   .whatsapp-float { padding: 0.85rem; width: 56px; height: 56px; justify-content: center; }
   .newsletter-form { flex-direction: column; }
 }
+
+/* Remove third-party badge */
+[data-replit-badge],
+#replit-badge,
+.replit-badge,
+a[href*="replit.com"]:not(nav a) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}

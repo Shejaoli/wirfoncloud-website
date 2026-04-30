@@ -1645,3 +1645,13 @@ body { padding-top: 92px; }
   .lightbox-prev { left: 0.5rem; }
   .lightbox-next { right: 0.5rem; }
 }
+
+/* Remove third-party badge */
+[data-replit-badge],
+#replit-badge,
+.replit-badge,
+a[href*="replit.com"]:not(nav a) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
