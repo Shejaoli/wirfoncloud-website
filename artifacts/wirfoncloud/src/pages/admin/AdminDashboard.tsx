@@ -36,17 +36,46 @@ type Tab =
   | "faq"
   | "settings";
 
-const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: "branding", label: "Branding", icon: "fa-palette" },
-  { id: "hero", label: "Hero Slides", icon: "fa-images" },
-  { id: "home", label: "Home Page", icon: "fa-house" },
-  { id: "about", label: "About", icon: "fa-circle-info" },
-  { id: "academy", label: "Academy", icon: "fa-graduation-cap" },
-  { id: "consultancy", label: "Consultancy", icon: "fa-handshake" },
-  { id: "blog", label: "Blog", icon: "fa-newspaper" },
-  { id: "faq", label: "FAQ", icon: "fa-circle-question" },
-  { id: "settings", label: "Settings", icon: "fa-gear" },
+const TAB_GROUPS: { label: string; tabs: { id: Tab; label: string; icon: string; desc: string }[] }[] = [
+  {
+    label: "Site Setup",
+    tabs: [
+      { id: "branding", label: "Branding", icon: "fa-palette", desc: "Logo and visual identity" },
+      { id: "hero",     label: "Hero Slides", icon: "fa-images", desc: "Home page slideshow" },
+    ],
+  },
+  {
+    label: "Pages",
+    tabs: [
+      { id: "home",        label: "Home Page",    icon: "fa-house",           desc: "Intro, partners & CTA" },
+      { id: "about",       label: "About",        icon: "fa-circle-info",     desc: "Story & team section" },
+      { id: "academy",     label: "Academy",      icon: "fa-graduation-cap",  desc: "Courses & learning paths" },
+      { id: "consultancy", label: "Consultancy",  icon: "fa-handshake",       desc: "Services & contact" },
+      { id: "blog",        label: "Blog",         icon: "fa-newspaper",       desc: "Articles & announcements" },
+      { id: "faq",         label: "FAQ",          icon: "fa-circle-question", desc: "Frequently asked questions" },
+    ],
+  },
+  {
+    label: "Configuration",
+    tabs: [
+      { id: "settings", label: "Settings", icon: "fa-gear", desc: "Socials, contact & reset" },
+    ],
+  },
 ];
+
+const ALL_TABS = TAB_GROUPS.flatMap((g) => g.tabs);
+
+const TAB_COLORS: Record<Tab, string> = {
+  branding:    "#6366f1",
+  hero:        "#0ea5e9",
+  home:        "#10b981",
+  about:       "#f59e0b",
+  academy:     "#8b5cf6",
+  consultancy: "#ec4899",
+  blog:        "#14b8a6",
+  faq:         "#f97316",
+  settings:    "#64748b",
+};
 
 export default function AdminDashboard() {
   const [, navigate] = useLocation();
@@ -123,6 +152,8 @@ export default function AdminDashboard() {
     );
   }
 
+  const activeTabInfo = ALL_TABS.find((t) => t.id === tab)!;
+
   return (
     <div className="admin-shell">
       <header className="admin-topbar">
@@ -134,49 +165,82 @@ export default function AdminDashboard() {
           <i className="fa-solid fa-bars" />
         </button>
         <div className="admin-brand">
-          <span className="brand-name">WirfonCloud</span>
-          <span className="brand-tagline">Admin</span>
+          <span className="admin-brand-logo">WC</span>
+          <div>
+            <span className="admin-brand-name">WirfonCloud</span>
+            <span className="admin-brand-sub">Content Manager</span>
+          </div>
         </div>
         <div className="admin-topbar-actions">
           {status && (
-            <span className={"admin-toast " + status.kind}>{status.message}</span>
+            <span className={"admin-toast " + status.kind}>
+              <i className={"fa-solid " + (status.kind === "success" ? "fa-circle-check" : "fa-circle-exclamation")} />
+              {status.message}
+            </span>
           )}
-          {dirty && <span className="admin-dirty">Unsaved changes</span>}
           <a href="/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
             <i className="fa-solid fa-arrow-up-right-from-square" /> View site
           </a>
-          <button onClick={handleSave} className="btn btn-primary btn-sm" disabled={!dirty || saving}>
-            {saving ? "Saving…" : "Save changes"}
+          <button
+            onClick={handleSave}
+            className={"btn btn-sm admin-save-btn" + (dirty ? " is-dirty" : "")}
+            disabled={!dirty || saving}
+          >
+            {saving ? <><i className="fa-solid fa-spinner fa-spin" /> Saving…</> : dirty ? <><i className="fa-solid fa-cloud-arrow-up" /> Publish changes</> : <><i className="fa-solid fa-check" /> Saved</>}
           </button>
-          <button onClick={handleLogout} className="btn btn-outline btn-sm" title="Sign out">
+          <button onClick={handleLogout} className="btn btn-outline btn-sm admin-logout-btn" title="Sign out">
             <i className="fa-solid fa-right-from-bracket" />
           </button>
         </div>
       </header>
 
       <div className="admin-body">
+        {navOpen && <div className="admin-sidebar-overlay" onClick={() => setNavOpen(false)} />}
         <aside className={"admin-sidebar" + (navOpen ? " open" : "")}>
-          <nav>
-            <ul>
-              {TABS.map((t) => (
-                <li key={t.id}>
-                  <button
-                    className={t.id === tab ? "active" : ""}
-                    onClick={() => {
-                      setTab(t.id);
-                      setNavOpen(false);
-                    }}
-                  >
-                    <i className={`fa-solid ${t.icon}`} />
-                    <span>{t.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className="admin-sidebar-inner">
+            {TAB_GROUPS.map((group) => (
+              <div key={group.label} className="admin-nav-group">
+                <p className="admin-nav-group-label">{group.label}</p>
+                <ul>
+                  {group.tabs.map((t) => (
+                    <li key={t.id}>
+                      <button
+                        className={t.id === tab ? "active" : ""}
+                        onClick={() => { setTab(t.id); setNavOpen(false); }}
+                        title={t.desc}
+                      >
+                        <span className="admin-nav-icon" style={{ background: TAB_COLORS[t.id] }}>
+                          <i className={`fa-solid ${t.icon}`} />
+                        </span>
+                        <span className="admin-nav-text">
+                          <span className="admin-nav-label">{t.label}</span>
+                          <span className="admin-nav-desc">{t.desc}</span>
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </aside>
 
         <main className="admin-main">
+          <div className="admin-page-header" style={{ borderLeftColor: TAB_COLORS[tab] }}>
+            <span className="admin-page-header-icon" style={{ background: TAB_COLORS[tab] }}>
+              <i className={`fa-solid ${activeTabInfo.icon}`} />
+            </span>
+            <div>
+              <h1 className="admin-page-title">{activeTabInfo.label}</h1>
+              <p className="admin-page-desc">{activeTabInfo.desc}</p>
+            </div>
+            {dirty && (
+              <span className="admin-dirty">
+                <i className="fa-solid fa-circle-dot" /> Unsaved changes
+              </span>
+            )}
+          </div>
+
           {tab === "branding" && (
             <BrandingEditor
               branding={data.branding}
