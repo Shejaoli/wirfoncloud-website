@@ -6,8 +6,8 @@ export type Course = {
 };
 export type LearningPath = { title: string; description: string; subject: string };
 export type VideoSlide = { src: string; title: string; caption: string };
-export type Quote = { text: string; author: string };
-export type BlogPost = { date: string; title: string; text: string; image: string };
+export type Quote = { text: string; author: string; photo?: string };
+export type BlogPost = { date: string; title: string; text: string; image: string; body?: string; link?: string };
 export type Faq = { q: string; a: string };
 export type Service = { icon: string; title: string; text: string };
 export type Partner = { name: string; href: string; logo?: string };

@@ -122,7 +122,11 @@ export default function Academy() {
                     <i className="fa-solid fa-quote-left" />
                     <p>"{q.text}"</p>
                     <div className="quote-author">
-                      <div className="avatar-placeholder" />
+                      {q.photo ? (
+                        <img className="quote-avatar" src={q.photo} alt={q.author} />
+                      ) : (
+                        <div className="avatar-placeholder" />
+                      )}
                       <span>{q.author}</span>
                     </div>
                   </div>

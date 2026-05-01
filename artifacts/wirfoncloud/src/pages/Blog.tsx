@@ -1,5 +1,70 @@
 import { useState, FormEvent } from "react";
 import { useSite } from "@/hooks/useSite";
+import type { BlogPost } from "@/lib/site";
+
+function BlogCard({ p }: { p: BlogPost }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const hasBody = !!p.body?.trim();
+  const hasLink = !!p.link?.trim();
+
+  return (
+    <article className="card blog-card">
+      <div className="blog-thumb-wrap">
+        {p.image ? (
+          <img
+            className="blog-thumb"
+            src={p.image}
+            alt={p.title}
+            loading="lazy"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+          />
+        ) : (
+          <div className="blog-thumb-placeholder">
+            <i className="fa-solid fa-newspaper" />
+          </div>
+        )}
+      </div>
+      <div className="blog-body">
+        {p.date && <span className="blog-date">{p.date}</span>}
+        <h4>{p.title}</h4>
+        <p>{p.text}</p>
+
+        {expanded && hasBody && (
+          <div
+            className="blog-full-body"
+            dangerouslySetInnerHTML={{ __html: p.body! }}
+          />
+        )}
+
+        <div className="blog-actions">
+          {hasLink && (
+            <a
+              href={p.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline btn-sm"
+            >
+              Read more <i className="fa-solid fa-arrow-up-right-from-square" />
+            </a>
+          )}
+          {!hasLink && hasBody && (
+            <button
+              className="btn btn-outline btn-sm"
+              onClick={() => setExpanded((v) => !v)}
+            >
+              {expanded ? (
+                <><i className="fa-solid fa-chevron-up" /> Close</>
+              ) : (
+                <><i className="fa-solid fa-book-open" /> Read more</>
+              )}
+            </button>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export default function Blog() {
   const site = useSite();
@@ -52,15 +117,7 @@ export default function Blog() {
             <h2 className="section-title">Latest Posts</h2>
             <div className="cards-grid">
               {site.blog.posts.map((p, i) => (
-                <article key={i} className="card blog-card">
-                  <img className="blog-thumb" src={p.image} alt={p.title} loading="lazy" />
-                  <div className="blog-body">
-                    <span className="blog-date">{p.date}</span>
-                    <h4>{p.title}</h4>
-                    <p>{p.text}</p>
-                    <a href="#" className="btn btn-outline btn-sm">Read More</a>
-                  </div>
-                </article>
+                <BlogCard key={i} p={p} />
               ))}
             </div>
           </div>

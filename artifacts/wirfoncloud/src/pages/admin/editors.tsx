@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ReactNode, useRef } from "react";
 import type {
   BlogPost,
   Course,
@@ -86,6 +86,101 @@ function Area({
       <span className="admin-field-label">{label}</span>
       <textarea value={value} onChange={(e) => onChange(e.target.value)} rows={rows} placeholder={placeholder} />
     </label>
+  );
+}
+
+function RichArea({
+  label,
+  value,
+  onChange,
+  rows = 5,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  rows?: number;
+  placeholder?: string;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  function wrap(open: string, close: string) {
+    const el = ref.current;
+    if (!el) return;
+    const { selectionStart: s, selectionEnd: e } = el;
+    const sel = el.value.slice(s, e) || "text";
+    const next = el.value.slice(0, s) + open + sel + close + el.value.slice(e);
+    onChange(next);
+    setTimeout(() => {
+      el.focus();
+      el.setSelectionRange(s + open.length, s + open.length + sel.length);
+    }, 0);
+  }
+
+  function insertLink() {
+    const url = prompt("Enter URL:", "https://");
+    if (!url) return;
+    const el = ref.current;
+    if (!el) return;
+    const { selectionStart: s, selectionEnd: e } = el;
+    const sel = el.value.slice(s, e) || "link text";
+    const tag = `<a href="${url}" target="_blank" rel="noopener noreferrer">${sel}</a>`;
+    const next = el.value.slice(0, s) + tag + el.value.slice(e);
+    onChange(next);
+  }
+
+  return (
+    <div className="admin-field">
+      <span className="admin-field-label">{label}</span>
+      <div className="rich-toolbar">
+        <button type="button" className="rich-btn" title="Bold" onClick={() => wrap("<strong>", "</strong>")}>
+          <i className="fa-solid fa-bold" />
+        </button>
+        <button type="button" className="rich-btn" title="Italic" onClick={() => wrap("<em>", "</em>")}>
+          <i className="fa-solid fa-italic" />
+        </button>
+        <button type="button" className="rich-btn" title="Insert link" onClick={insertLink}>
+          <i className="fa-solid fa-link" />
+        </button>
+        <button type="button" className="rich-btn" title="List item" onClick={() => wrap("<li>", "</li>")}>
+          <i className="fa-solid fa-list-ul" />
+        </button>
+        <span className="rich-toolbar-hint">Select text then click a button</span>
+      </div>
+      <textarea
+        ref={ref}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        rows={rows}
+        placeholder={placeholder}
+      />
+    </div>
+  );
+}
+
+function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  const safe = /^#[0-9a-fA-F]{3,8}$/.test(value) ? value : "#0199ef";
+  return (
+    <div className="admin-field">
+      <span className="admin-field-label">{label}</span>
+      <div className="color-field-row">
+        <input
+          type="color"
+          value={safe}
+          onChange={(e) => onChange(e.target.value)}
+          className="color-swatch-input"
+          title="Pick a colour"
+        />
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="#0199ef"
+          className="color-text-input"
+          spellCheck={false}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -221,17 +316,15 @@ export function HeroEditor({
               hint="If set, overlaid with a dark tint so the text stays readable. Leave empty to use the gradient colors."
             />
             <div className="admin-grid-2">
-              <Field
-                label="Gradient color from"
+              <ColorField
+                label="Gradient color — from"
                 value={slide.bgFrom}
                 onChange={(v) => update({ ...slide, bgFrom: v })}
-                placeholder="#0199ef"
               />
-              <Field
-                label="Gradient color to"
+              <ColorField
+                label="Gradient color — to"
                 value={slide.bgTo}
                 onChange={(v) => update({ ...slide, bgTo: v })}
-                placeholder="#005fa3"
               />
             </div>
           </>
@@ -647,7 +740,7 @@ export function AcademyEditor({
           items={academy.testimonialQuotes}
           onChange={(testimonialQuotes) => onChange({ ...academy, testimonialQuotes })}
           addLabel="Add quote"
-          newItem={() => ({ text: "", author: "Alumni Name" })}
+          newItem={() => ({ text: "", author: "Alumni Name", photo: "" })}
           renderItem={(q, _i, update) => (
             <>
               <Area
@@ -656,7 +749,14 @@ export function AcademyEditor({
                 onChange={(v) => update({ ...q, text: v })}
                 rows={3}
               />
-              <Field label="Author" value={q.author} onChange={(v) => update({ ...q, author: v })} />
+              <div className="admin-grid-2">
+                <Field label="Author name" value={q.author} onChange={(v) => update({ ...q, author: v })} />
+              </div>
+              <ImageUpload
+                label="Author photo (optional — shows as avatar)"
+                value={q.photo ?? ""}
+                onChange={(v) => update({ ...q, photo: v })}
+              />
             </>
           )}
         />
@@ -787,7 +887,26 @@ export function BlogEditor({
                 />
                 <Field label="Title" value={p.title} onChange={(v) => update({ ...p, title: v })} />
               </div>
-              <Area label="Excerpt" value={p.text} onChange={(v) => update({ ...p, text: v })} rows={3} />
+              <Area
+                label="Excerpt (shown on the card)"
+                value={p.text}
+                onChange={(v) => update({ ...p, text: v })}
+                rows={2}
+                placeholder="One or two sentences summarising the post…"
+              />
+              <RichArea
+                label="Full article body (shown when reader expands the post)"
+                value={p.body ?? ""}
+                onChange={(v) => update({ ...p, body: v })}
+                rows={8}
+                placeholder="Write the full post here. Use the toolbar to add bold, italic, links or list items."
+              />
+              <Field
+                label="External link (overrides body — links 'Read More' to another page)"
+                value={p.link ?? ""}
+                onChange={(v) => update({ ...p, link: v })}
+                placeholder="https://linkedin.com/posts/…"
+              />
               <ImageUpload
                 label="Thumbnail"
                 value={p.image}
