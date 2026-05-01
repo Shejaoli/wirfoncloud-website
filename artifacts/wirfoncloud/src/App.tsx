@@ -5,6 +5,7 @@ import About from "@/pages/About";
 import Academy from "@/pages/Academy";
 import Consultancy from "@/pages/Consultancy";
 import Blog from "@/pages/Blog";
+import BlogPostPage from "@/pages/BlogPostPage";
 import FAQ from "@/pages/FAQ";
 import Gallery from "@/pages/Gallery";
 import AdminLogin from "@/pages/admin/AdminLogin";
@@ -20,6 +21,7 @@ function PublicRouter() {
         <Route path="/academy" component={Academy} />
         <Route path="/consultancy" component={Consultancy} />
         <Route path="/blog" component={Blog} />
+        <Route path="/blog/:slug" component={BlogPostPage} />
         <Route path="/gallery" component={Gallery} />
         <Route path="/faq" component={FAQ} />
         <Route component={NotFound} />

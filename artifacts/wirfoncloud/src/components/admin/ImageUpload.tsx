@@ -18,6 +18,7 @@ export function ImageUpload({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [drag, setDrag] = useState(false);
+  const [previewErr, setPreviewErr] = useState(false);
 
   async function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
@@ -34,6 +35,7 @@ export function ImageUpload({
       setErr(res.error || "Upload failed");
       return;
     }
+    setPreviewErr(false);
     onChange(res.url);
   }
 
@@ -73,15 +75,26 @@ export function ImageUpload({
           }
         }}
       >
-        {value ? (
+        {value && !previewErr ? (
           <>
-            <img src={value} alt="" className="admin-image-preview" />
+            <img
+              src={value}
+              alt=""
+              className="admin-image-preview"
+              onError={() => setPreviewErr(true)}
+            />
             <div className="admin-image-overlay">
               <span>
                 <i className="fa-solid fa-arrows-rotate" /> Replace image
               </span>
             </div>
           </>
+        ) : value && previewErr ? (
+          <div className="admin-image-empty">
+            <i className="fa-solid fa-circle-exclamation" style={{ color: "#f97316" }} />
+            <p>Image saved but can't preview URL</p>
+            <p className="muted" style={{ fontSize: "0.72rem", wordBreak: "break-all" }}>{value}</p>
+          </div>
         ) : (
           <div className="admin-image-empty">
             <i className="fa-solid fa-cloud-arrow-up" />

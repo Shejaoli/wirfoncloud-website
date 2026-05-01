@@ -13,6 +13,7 @@ import type {
   VideoSlide,
 } from "@/lib/site";
 import type { AboutSection } from "@/lib/site";
+import { toSlug } from "@/lib/site";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 
 /* -------------------------------------------------------------------------- */
@@ -876,44 +877,67 @@ export function BlogEditor({
             text: "",
             image: "https://picsum.photos/seed/new/600/300",
           })}
-          renderItem={(p, _i, update) => (
-            <>
-              <div className="admin-grid-2">
-                <Field
-                  label="Date label"
-                  value={p.date}
-                  onChange={(v) => update({ ...p, date: v })}
-                  placeholder="August 12, 2025"
+          renderItem={(p, _i, update) => {
+            const autoSlug = toSlug(p.title);
+            return (
+              <>
+                <div className="admin-grid-2">
+                  <Field
+                    label="Date label"
+                    value={p.date}
+                    onChange={(v) => update({ ...p, date: v })}
+                    placeholder="August 12, 2025"
+                  />
+                  <Field
+                    label="Title"
+                    value={p.title}
+                    onChange={(v) => {
+                      const newSlug = !p.slug || p.slug === toSlug(p.title) ? toSlug(v) : p.slug;
+                      update({ ...p, title: v, slug: newSlug });
+                    }}
+                  />
+                </div>
+                <label className="admin-field">
+                  <span className="admin-field-label">URL slug (auto-generated — edit only if needed)</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <span style={{ color: "var(--grey-500)", fontSize: "0.88rem", whiteSpace: "nowrap" }}>/blog/</span>
+                    <input
+                      type="text"
+                      value={p.slug ?? autoSlug}
+                      onChange={(v) => update({ ...p, slug: v.target.value })}
+                      placeholder={autoSlug}
+                      style={{ flex: 1 }}
+                    />
+                  </div>
+                </label>
+                <Area
+                  label="Excerpt (shown on the card)"
+                  value={p.text}
+                  onChange={(v) => update({ ...p, text: v })}
+                  rows={2}
+                  placeholder="One or two sentences summarising the post…"
                 />
-                <Field label="Title" value={p.title} onChange={(v) => update({ ...p, title: v })} />
-              </div>
-              <Area
-                label="Excerpt (shown on the card)"
-                value={p.text}
-                onChange={(v) => update({ ...p, text: v })}
-                rows={2}
-                placeholder="One or two sentences summarising the post…"
-              />
-              <RichArea
-                label="Full article body (shown when reader expands the post)"
-                value={p.body ?? ""}
-                onChange={(v) => update({ ...p, body: v })}
-                rows={8}
-                placeholder="Write the full post here. Use the toolbar to add bold, italic, links or list items."
-              />
-              <Field
-                label="External link (overrides body — links 'Read More' to another page)"
-                value={p.link ?? ""}
-                onChange={(v) => update({ ...p, link: v })}
-                placeholder="https://linkedin.com/posts/…"
-              />
-              <ImageUpload
-                label="Thumbnail"
-                value={p.image}
-                onChange={(v) => update({ ...p, image: v })}
-              />
-            </>
-          )}
+                <RichArea
+                  label="Full article body"
+                  value={p.body ?? ""}
+                  onChange={(v) => update({ ...p, body: v })}
+                  rows={10}
+                  placeholder="Write the full post here. Use the toolbar to format text — bold, italic, links and list items are supported."
+                />
+                <Field
+                  label="External link (optional — if set, 'Read more' links here instead of the body)"
+                  value={p.link ?? ""}
+                  onChange={(v) => update({ ...p, link: v })}
+                  placeholder="https://linkedin.com/posts/…"
+                />
+                <ImageUpload
+                  label="Thumbnail"
+                  value={p.image}
+                  onChange={(v) => update({ ...p, image: v })}
+                />
+              </>
+            );
+          }}
         />
       </Section>
     </>

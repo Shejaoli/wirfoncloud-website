@@ -1,23 +1,26 @@
 import { useState, FormEvent } from "react";
+import { Link } from "wouter";
 import { useSite } from "@/hooks/useSite";
+import { toSlug } from "@/lib/site";
 import type { BlogPost } from "@/lib/site";
 
 function BlogCard({ p }: { p: BlogPost }) {
-  const [expanded, setExpanded] = useState(false);
-
-  const hasBody = !!p.body?.trim();
+  const [imgErr, setImgErr] = useState(false);
+  const slug = p.slug || toSlug(p.title);
   const hasLink = !!p.link?.trim();
+  const hasBody = !!p.body?.trim();
+  const showThumb = !!p.image && !imgErr;
 
   return (
     <article className="card blog-card">
       <div className="blog-thumb-wrap">
-        {p.image ? (
+        {showThumb ? (
           <img
             className="blog-thumb"
             src={p.image}
             alt={p.title}
             loading="lazy"
-            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+            onError={() => setImgErr(true)}
           />
         ) : (
           <div className="blog-thumb-placeholder">
@@ -28,38 +31,22 @@ function BlogCard({ p }: { p: BlogPost }) {
       <div className="blog-body">
         {p.date && <span className="blog-date">{p.date}</span>}
         <h4>{p.title}</h4>
-        <p>{p.text}</p>
-
-        {expanded && hasBody && (
-          <div
-            className="blog-full-body"
-            dangerouslySetInnerHTML={{ __html: p.body! }}
-          />
-        )}
-
+        {p.text && <p>{p.text}</p>}
         <div className="blog-actions">
-          {hasLink && (
+          {hasLink ? (
             <a
-              href={p.link}
+              href={p.link!}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-outline btn-sm"
             >
-              Read more <i className="fa-solid fa-arrow-up-right-from-square" />
+              Read more&nbsp;<i className="fa-solid fa-arrow-up-right-from-square" />
             </a>
-          )}
-          {!hasLink && hasBody && (
-            <button
-              className="btn btn-outline btn-sm"
-              onClick={() => setExpanded((v) => !v)}
-            >
-              {expanded ? (
-                <><i className="fa-solid fa-chevron-up" /> Close</>
-              ) : (
-                <><i className="fa-solid fa-book-open" /> Read more</>
-              )}
-            </button>
-          )}
+          ) : (hasBody || true) && slug ? (
+            <Link href={`/blog/${slug}`} className="btn btn-outline btn-sm">
+              Read more&nbsp;<i className="fa-solid fa-book-open" />
+            </Link>
+          ) : null}
         </div>
       </div>
     </article>

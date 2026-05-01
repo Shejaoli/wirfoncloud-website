@@ -7,7 +7,17 @@ export type Course = {
 export type LearningPath = { title: string; description: string; subject: string };
 export type VideoSlide = { src: string; title: string; caption: string };
 export type Quote = { text: string; author: string; photo?: string };
-export type BlogPost = { date: string; title: string; text: string; image: string; body?: string; link?: string };
+export type BlogPost = { date: string; title: string; text: string; image: string; body?: string; link?: string; slug?: string };
+
+export function toSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
 export type Faq = { q: string; a: string };
 export type Service = { icon: string; title: string; text: string };
 export type Partner = { name: string; href: string; logo?: string };
@@ -140,11 +150,7 @@ export const DEFAULT_SITE: SiteContent = {
     { src: "https://www.youtube.com/embed/n4qHUXrRcds", title: "AWS re:Invent Recap", caption: "AWS re:Invent Recap at WirfonCloud" },
     { src: "https://www.youtube.com/embed/aByknzTTOaY", title: "WirfonCloud Testimonial", caption: "WirfonCloud Client Story" },
   ],
-  partners: [
-    { name: "Partner 1", href: "#", logo: "" },
-    { name: "Partner 2", href: "#", logo: "" },
-    { name: "Partner 3", href: "#", logo: "" },
-  ],
+  partners: [],
   homeCta: {
     title: "Ready to Get Started?",
     text: "Book a free appointment with our team via Google Calendar or connect with us on LinkedIn.",

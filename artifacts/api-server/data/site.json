@@ -47,11 +47,7 @@
     { "src": "https://www.youtube.com/embed/n4qHUXrRcds", "title": "AWS re:Invent Recap", "caption": "AWS re:Invent Recap at WirfonCloud" },
     { "src": "https://www.youtube.com/embed/aByknzTTOaY", "title": "WirfonCloud Testimonial", "caption": "WirfonCloud Client Story" }
   ],
-  "partners": [
-    { "name": "Partner 1", "href": "#", "logo": "" },
-    { "name": "Partner 2", "href": "#", "logo": "" },
-    { "name": "Partner 3", "href": "#", "logo": "" }
-  ],
+  "partners": [],
   "homeCta": {
     "title": "Ready to Get Started?",
     "text": "Book a free appointment with our team via Google Calendar or connect with us on LinkedIn.",
@@ -148,9 +144,9 @@
     "title": "Stay in the Loop",
     "text": "Subscribe to our newsletter for the latest cloud news, tutorials, and event invites.",
     "posts": [
-      { "date": "August 12, 2025", "title": "Getting Started with AWS Solutions Architect", "text": "Your roadmap to passing the SAA-C03 exam, told by engineers who've done it.", "image": "https://picsum.photos/seed/aws/600/300" },
-      { "date": "July 30, 2025", "title": "Cloud Cost Optimization: 7 Wins for Week One", "text": "Quick, low-risk changes to start trimming your AWS bill in your first week.", "image": "https://picsum.photos/seed/cloud/600/300" },
-      { "date": "July 15, 2025", "title": "From Helpdesk to Cloud Engineer in 12 Months", "text": "How a WirfonCloud alumni used our learning paths to land their first cloud role.", "image": "https://picsum.photos/seed/engineer/600/300" }
+      { "date": "August 12, 2025", "title": "Getting Started with AWS Solutions Architect", "slug": "getting-started-with-aws-solutions-architect", "text": "Your roadmap to passing the SAA-C03 exam, told by engineers who've done it.", "image": "https://picsum.photos/seed/aws/600/300", "body": "", "link": "" },
+      { "date": "July 30, 2025", "title": "Cloud Cost Optimization: 7 Wins for Week One", "slug": "cloud-cost-optimization-7-wins-for-week-one", "text": "Quick, low-risk changes to start trimming your AWS bill in your first week.", "image": "https://picsum.photos/seed/cloud/600/300", "body": "", "link": "" },
+      { "date": "July 15, 2025", "title": "From Helpdesk to Cloud Engineer in 12 Months", "slug": "from-helpdesk-to-cloud-engineer-in-12-months", "text": "How a WirfonCloud alumni used our learning paths to land their first cloud role.", "image": "https://picsum.photos/seed/engineer/600/300", "body": "", "link": "" }
     ]
   },
   "faqs": [
